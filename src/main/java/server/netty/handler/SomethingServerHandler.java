@@ -52,8 +52,6 @@ public class SomethingServerHandler extends ChannelInboundHandlerAdapter {
 
 	@Override
 	public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-
-		// String stringMessage = (String) msg;
 		String stringMessage = "242400900000001FFFFFFF99553134333334352E3030302C412C343031302E393430372C4E2C30303334302E333138352C572C302E30302C3131382C3139303331382C2C2A31437C302E387C3631387C323030307C303030302C303030302C303130332C303239467C30304436303030333034383830303646353431357C36337C30303030303346467C3041DA210D0A";
 		byte[] msgBytes = new BigInteger(stringMessage, 16).toByteArray();
 
@@ -63,11 +61,6 @@ public class SomethingServerHandler extends ChannelInboundHandlerAdapter {
 		}
 		log.info(sb.toString());
 
-		// log.info("base16" +
-		// BaseEncoding.base16().encode(stringMessage.getBytes(Charsets.US_ASCII)));
-
-		// String inHex =
-		// "FFFFF99553134333334352E3030302C412C343031302E393430372C4E2C30303334302E333138352C572C302E30302C31";
 		DataInBean dib = new DataInBean(sb.toString());
 		log.info(dib.toString());
 		ctx.channel().writeAndFlush(stringMessage + "\n\r");
