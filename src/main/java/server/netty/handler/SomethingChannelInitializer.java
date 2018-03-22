@@ -25,16 +25,18 @@ import io.netty.channel.ChannelPipeline;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.handler.codec.DelimiterBasedFrameDecoder;
 import io.netty.handler.codec.Delimiters;
-import io.netty.handler.codec.string.StringDecoder;
-import io.netty.handler.codec.string.StringEncoder;
+import io.netty.handler.codec.bytes.ByteArrayDecoder;
+import io.netty.handler.codec.bytes.ByteArrayEncoder;
+import server.dataIn.MyByteArrayDecoder;
+import server.dataIn.MyByteArrayEncoder;
 
 
 @Component
 @Qualifier("somethingChannelInitializer")
 public class SomethingChannelInitializer extends ChannelInitializer<SocketChannel> {
 
-    private static final StringDecoder DECODER = new StringDecoder();
-    private static final StringEncoder ENCODER = new StringEncoder();
+    private static final ByteArrayDecoder DECODER = new MyByteArrayDecoder();
+    private static final ByteArrayEncoder ENCODER = new MyByteArrayEncoder();
 
     @Autowired
     @Qualifier("somethingServerHandler")

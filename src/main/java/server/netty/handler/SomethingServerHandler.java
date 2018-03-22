@@ -15,8 +15,6 @@
  */
 package server.netty.handler;
 
-import java.math.BigInteger;
-
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -26,7 +24,6 @@ import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import lombok.extern.slf4j.Slf4j;
-import server.dataIn.DataInBean;
 import server.netty.ChannelRepository;
 
 @Slf4j
@@ -52,17 +49,17 @@ public class SomethingServerHandler extends ChannelInboundHandlerAdapter {
 
 	@Override
 	public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-		String stringMessage = "242400900000001FFFFFFF99553134333334352E3030302C412C343031302E393430372C4E2C30303334302E333138352C572C302E30302C3131382C3139303331382C2C2A31437C302E387C3631387C323030307C303030302C303030302C303130332C303239467C30304436303030333034383830303646353431357C36337C30303030303346467C3041DA210D0A";
-		byte[] msgBytes = new BigInteger(stringMessage, 16).toByteArray();
+		byte [] stringMessage = (byte[]) msg;
 
+		byte[] msgBytes = stringMessage;
 		StringBuilder sb = new StringBuilder();
 		for (byte b : msgBytes) {
 			sb.append(String.format("%02X", b));
 		}
 		log.info(sb.toString());
 
-		DataInBean dib = new DataInBean(sb.toString());
-		log.info(dib.toString());
+	//	DataInBean dib = new DataInBean(sb.toString());
+	//	log.info(dib.toString());
 		ctx.channel().writeAndFlush(stringMessage + "\n\r");
 		return;
 
