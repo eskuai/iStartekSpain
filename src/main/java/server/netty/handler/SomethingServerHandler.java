@@ -20,6 +20,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
+import com.bedatadriven.jackson.datatype.jts.JtsModule;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.GeometryFactory;
+import com.vividsolutions.jts.geom.Point;
+
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
@@ -49,7 +55,7 @@ public class SomethingServerHandler extends ChannelInboundHandlerAdapter {
 
 	@Override
 	public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-		byte [] stringMessage = (byte[]) msg;
+		byte[] stringMessage = (byte[]) msg;
 
 		byte[] msgBytes = stringMessage;
 		StringBuilder sb = new StringBuilder();
@@ -58,9 +64,17 @@ public class SomethingServerHandler extends ChannelInboundHandlerAdapter {
 		}
 		log.info(sb.toString());
 
-	//	DataInBean dib = new DataInBean(sb.toString());
-	//	log.info(dib.toString());
+		// DataInBean dib = new DataInBean(sb.toString());
+		// log.info(dib.toString());
 		ctx.channel().writeAndFlush(stringMessage + "\n\r");
+
+		ObjectMapper mapper = new ObjectMapper();
+		mapper.registerModule(new JtsModule());
+		
+		GeometryFactory gf = new GeometryFactory();
+		Point point = gf.createPoint(new Coordinate(1.2345678, 2.3456789));
+		String geojson = mapper.writeValueAsString(point);
+
 		return;
 
 	}
